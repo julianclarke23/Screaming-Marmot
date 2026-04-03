@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Screaming Marmot Website</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      overflow-x: hidden;
+      background: #1a3a0a;
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&q=80');
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .page-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.38);
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 70px;
+    }
+
+    .title {
+      font-size: clamp(30px, 6vw, 58px);
+      font-weight: 900;
+      color: #fff;
+      text-shadow:
+        3px 3px 0 #1a4a00,
+        -1px -1px 0 #1a4a00,
+        2px -1px 0 #1a4a00,
+        -1px 2px 0 #1a4a00,
+        0 4px 24px rgba(0,0,0,0.9);
+      letter-spacing: 4px;
+      text-align: center;
+    }
+
+    .est {
+      font-size: 14px;
+      color: #d0f0a0;
+      letter-spacing: 4px;
+      margin-top: 8px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+      text-align: center;
+    }
+
+    .stage {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1050px;
+    }
+
+    .marmot-wrap { flex: 0 0 auto; }
+
+    .marmot-img {
+      width: 210px;
+      height: 310px;
+      object-fit: cover;
+      object-position: center 20%;
+      border-radius: 10px;
+      border: 3px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+      display: block;
+      background: #2a4a1a;
+    }
+
+    .marmot-wrap.flip .marmot-img { transform: scaleX(-1); }
+
+    .video-wrap {
+      flex: 0 0 auto;
+      border: 8px solid #2d5a1b;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      outline: 5px solid #a8d060;
+      box-shadow: 0 8px 50px rgba(0,0,0,0.95);
+    }
+
+    .video-wrap video {
+      display: block;
+      width: 300px;
+      height: 534px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <div class="content">
+
+    <h1 class="title">THE SCREAMING MARMOT WEBSITE</h1>
+    <p class="est">EST. 2026</p>
+
+    <div class="stage">
+
+      <!-- Left marmot -->
+      <div class="marmot-wrap" id="left-wrap">
+        <img id="marmot-left" class="marmot-img"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Marmot-edit1.jpg/400px-Marmot-edit1.jpg"
+          alt="Screaming Marmot" />
+      </div>
+
+      <!-- Video: place marmot.mp4 in the same folder as this file -->
+      <div class="video-wrap">
+        <video autoplay loop playsinline>
+          <source src="marmot.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- Right marmot (flipped) -->
+      <div class="marmot-wrap flip">
+        <img id="marmot-right" class="marmot-img"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Marmot-edit1.jpg/400px-Marmot-edit1.jpg"
+          alt="Screaming Marmot" />
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const marmotSources = [
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Marmot-edit1.jpg/400px-Marmot-edit1.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Marmota_monax_UL_04.jpg/400px-Marmota_monax_UL_04.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9e/Marmota_monax_UL_04.jpg',
+  ];
+
+  function tryNextSource(imgEl, idx) {
+    if (idx >= marmotSources.length) {
+      imgEl.style.display = 'none';
+      return;
+    }
+    imgEl.src = marmotSources[idx];
+    imgEl.onerror = () => tryNextSource(imgEl, idx + 1);
+  }
+
+  document.getElementById('marmot-left').onerror  = () => tryNextSource(document.getElementById('marmot-left'),  1);
+  document.getElementById('marmot-right').onerror = () => tryNextSource(document.getElementById('marmot-right'), 1);
+</script>
+
+</body>
+</html>
